@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dp715u3bptm6h"]
+
+[ext_resource type="Script" path="res://chunk.gd" id="1_u663l"]
+
+[node name="Chunk" type="MeshInstance3D"]
+script = ExtResource("1_u663l")
