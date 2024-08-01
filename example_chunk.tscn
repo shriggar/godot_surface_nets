@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://xqoiecytdhsr"]
+
+[ext_resource type="PackedScene" uid="uid://ckyv60fee3isb" path="res://common/point_view.tscn" id="1_v7f2r"]
+[ext_resource type="Environment" uid="uid://btg46q207xigc" path="res://common/environment.tres" id="2_u8qqt"]
+[ext_resource type="Script" path="res://freelook_camera.gd" id="3_3tf7r"]
+[ext_resource type="PackedScene" uid="uid://dp715u3bptm6h" path="res://chunk.tscn" id="4_n0d7g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_je0kj"]
+albedo_color = Color(0.348, 0.145, 0.58, 1)
+
+[node name="ExampleScene" type="Node3D"]
+
+[node name="PointView" parent="." instance=ExtResource("1_v7f2r")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 6, 6, 6)
+environment = ExtResource("2_u8qqt")
+script = ExtResource("3_3tf7r")
+
+[node name="Chunk" parent="." instance=ExtResource("4_n0d7g")]
+material_override = SubResource("StandardMaterial3D_je0kj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.926062, -0.296124, 0.233924, 0, 0.619875, 0.784701, -0.377372, -0.726681, 0.574042, 0, 0, 0)
+light_energy = 2.0

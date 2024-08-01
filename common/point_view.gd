@@ -1,13 +1,13 @@
 class_name PointView;
 extends MultiMeshInstance3D
 
-var _count = 0;
+var _count:int = 0;
 
-func _ready():
+func _ready() -> void:
 	multimesh.visible_instance_count = 0;
 
-func add_point(point_position: Vector3, color: Color):
-	var index = _count;
+func add_point(point_position: Vector3, color: Color) -> void:
+	var index := _count;
 	_count += 1;
 	
 	if index >= multimesh.instance_count:

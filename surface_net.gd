@@ -2,7 +2,7 @@ extends MeshInstance3D
 
 var surface_tool := SurfaceTool.new();
 
-func _ready():
+func _ready() -> void:
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 	surface_tool.set_color(Colors.BLUE_D);
 	surface_tool.set_smooth_group(0)
@@ -17,18 +17,18 @@ func get_sample_value(index: Vector3i) -> float:
 	
 ## Creates a surface mesh by sampling and creating quads to divide the samples
 ## size: square radius to create the mesh in
-func create_surface_mesh(size: int = 6):
+func create_surface_mesh(size: int = 6) -> void:
 	for x in range(-size, size):
 		for y in range(-size, size):
 			for z in range(-size, size):
 				create_surface_mesh_quad(Vector3i(x,y,z));
 
 ## Create 0-3 quads based on the sample values of the given index and it's neighboring sample points
-func create_surface_mesh_quad(index: Vector3i):
+func create_surface_mesh_quad(index: Vector3i) -> void:
 	for axis_index in range(AXIS.size()):
-		var axis = AXIS[axis_index];
-		var sample_value1 = get_sample_value(index);
-		var sample_value2 = get_sample_value(index + axis);
+		var axis:Vector3i = AXIS[axis_index];
+		var sample_value1 := get_sample_value(index);
+		var sample_value2 := get_sample_value(index + axis);
 		
 		if sample_value1 < 0 and sample_value2 >= 0:
 			add_quad(index, axis_index);
@@ -43,8 +43,8 @@ const AXIS := [
 ];
 
 ## Create a quad using Godot's Surface Tool
-func add_quad(index: Vector3i, axis_index: int):
-	var points = get_quad_points(index, axis_index);
+func add_quad(index: Vector3i, axis_index: int) -> void:
+	var points := get_quad_points(index, axis_index);
 	
 	add_vertex(points[0])
 	add_vertex(points[1])
@@ -55,8 +55,8 @@ func add_quad(index: Vector3i, axis_index: int):
 	add_vertex(points[3])
 	
 ## Create a quad with reversed faces using Godot's Surface Tool
-func add_reversed_quad(index: Vector3i, axis_index: int):
-	var points = get_quad_points(index, axis_index);
+func add_reversed_quad(index: Vector3i, axis_index: int) -> void:
+	var points := get_quad_points(index, axis_index);
 	
 	add_vertex(points[0])
 	add_vertex(points[2])
@@ -67,7 +67,7 @@ func add_reversed_quad(index: Vector3i, axis_index: int):
 	add_vertex(points[2])
 			
 ## Get the indexs of the 4 points for a quad facing the direction of AXIS[axis_index]			
-func get_quad_points(index: Vector3i, axis_index: int):
+func get_quad_points(index: Vector3i, axis_index: int) -> Array:
 	return [
 		index + QUAD_POINTS[axis_index][0],
 		index + QUAD_POINTS[axis_index][1],
@@ -101,25 +101,25 @@ const QUAD_POINTS := [
 ];
 	
 ## Add a vertex with Godot's Surface Tool
-func add_vertex(index: Vector3i):	
-	var sample_value = get_sample_value(index);
-	var surface_position = get_surface_position(index);
-	var surface_gradient = get_surface_gradient(index, sample_value);
+func add_vertex(index: Vector3i) -> void:	
+	var sample_value := get_sample_value(index);
+	var surface_position := get_surface_position(index);
+	var surface_gradient := get_surface_gradient(index, sample_value);
 	
 	surface_tool.set_normal(surface_gradient);
 	surface_tool.add_vertex(surface_position);
 	
 ## Calculate the surface position by finding the interpolated surface point for each edge
 ## Then average the interpolated points, and skip any edges that have the same sign
-func get_surface_position(index: Vector3i):
+func get_surface_position(index: Vector3i) -> Vector3:
 	var total := Vector3.ZERO;
-	var surface_edge_count = 0;
+	var surface_edge_count := 0;
 	
-	for edge_offsets in EDGE_OFFSETS:
-		var position_a = Vector3(index + edge_offsets[0]);
-		var sample_a = get_sample_value(position_a);
-		var position_b = Vector3(index + edge_offsets[1])
-		var sample_b = get_sample_value(position_b);
+	for edge_offsets:Array in EDGE_OFFSETS:
+		var position_a := Vector3(index + edge_offsets[0]);
+		var sample_a := get_sample_value(position_a);
+		var position_b := Vector3(index + edge_offsets[1])
+		var sample_b := get_sample_value(position_b);
 		
 		# if different signs
 		if sample_a * sample_b < 0:
