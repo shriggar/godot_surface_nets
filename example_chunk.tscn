@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://xqoiecytdhsr"]
+[gd_scene load_steps=5 format=3 uid="uid://xqoiecytdhsr"]
 
-[ext_resource type="PackedScene" uid="uid://ckyv60fee3isb" path="res://common/point_view.tscn" id="1_v7f2r"]
 [ext_resource type="Environment" uid="uid://btg46q207xigc" path="res://common/environment.tres" id="2_u8qqt"]
 [ext_resource type="Script" path="res://freelook_camera.gd" id="3_3tf7r"]
 [ext_resource type="PackedScene" uid="uid://dp715u3bptm6h" path="res://chunk.tscn" id="4_n0d7g"]
@@ -9,8 +8,6 @@
 albedo_color = Color(0.348, 0.145, 0.58, 1)
 
 [node name="ExampleScene" type="Node3D"]
-
-[node name="PointView" parent="." instance=ExtResource("1_v7f2r")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 6, 6, 6)

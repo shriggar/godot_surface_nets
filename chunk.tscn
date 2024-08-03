@@ -4,4 +4,3 @@
 
 [node name="Chunk" type="MeshInstance3D"]
 script = ExtResource("1_u663l")
-chunk_edge_length_in_voxels = 15

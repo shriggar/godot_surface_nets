@@ -1,17 +1,9 @@
 extends MeshInstance3D
 
-
+@export var chunk_offset := Vector3i.ZERO
 var surface_tool := SurfaceTool.new();
-@export var chunk_offset:Vector3i = Vector3i.ZERO
-@export var chunk_edge_length_in_voxels:int = 16
-
 
 func _ready() -> void:
-	#var s := JunkPile.chunk_edge_length_in_meters / chunk_edge_length_in_voxels
-	#scale = Vector3(s, s, s)
-	
-	
-	
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 	surface_tool.set_color(Colors.BLUE_D);
 	surface_tool.set_smooth_group(0)
@@ -22,18 +14,14 @@ const CENTER := Vector3.ZERO;
 const RADIUS: float = 5.0;	
 
 func get_sample_value(index: Vector3i) -> float:	
-	return CENTER.distance_to(  index ) - RADIUS;
+	return JunkPile.get_sample_value(index)   #CENTER.distance_to(index) - RADIUS;
 	
 ## Creates a surface mesh by sampling and creating quads to divide the samples
 ## size: square radius to create the mesh in
-func create_surface_mesh() -> void:
-	@warning_ignore("integer_division")
-	var start := chunk_edge_length_in_voxels / -2
-	@warning_ignore("integer_division")
-	var end := chunk_edge_length_in_voxels / 2 if chunk_edge_length_in_voxels % 2 == 0 else chunk_edge_length_in_voxels / 2 + 1
-	for x in range(start, end):
-		for y in range(start, end):
-			for z in range(start, end):
+func create_surface_mesh(size: int = JunkPile.chunk_size) -> void:
+	for x in range(-size, size):
+		for y in range(-size, size):
+			for z in range(-size, size):
 				create_surface_mesh_quad(Vector3i(x,y,z));
 
 ## Create 0-3 quads based on the sample values of the given index and it's neighboring sample points
@@ -47,6 +35,8 @@ func create_surface_mesh_quad(index: Vector3i) -> void:
 			add_quad(index, axis_index);
 		elif sample_value1 >= 0 and sample_value2 < 0:
 			add_reversed_quad(index, axis_index);
+		elif sample_value1 < 0 and (index.x ==  (JunkPile.chunk_size -1) or index.y ==  (JunkPile.chunk_size -1) or index.z ==  (JunkPile.chunk_size -1) ):
+			add_quad(index, axis_index);
 
 ## Constant for the positive axis directions
 const AXIS := [
@@ -114,7 +104,7 @@ const QUAD_POINTS := [
 ];
 	
 ## Add a vertex with Godot's Surface Tool
-func add_vertex(index: Vector3i) -> void:
+func add_vertex(index: Vector3i) -> void:	
 	var sample_value := get_sample_value(index);
 	var surface_position := get_surface_position(index);
 	var surface_gradient := get_surface_gradient(index, sample_value);
