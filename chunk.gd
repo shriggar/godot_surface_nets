@@ -35,8 +35,11 @@ func create_surface_mesh_quad(index: Vector3i) -> void:
 			add_quad(index, axis_index);
 		elif sample_value1 >= 0 and sample_value2 < 0:
 			add_reversed_quad(index, axis_index);
-		elif sample_value1 < 0 and (index.x ==  (JunkPile.chunk_size -1) or index.y ==  (JunkPile.chunk_size -1) or index.z ==  (JunkPile.chunk_size -1) ):
+		elif sample_value1 < 0 and ((index.x == JunkPile.chunk_size -1 and axis_index == 0) or (index.y == JunkPile.chunk_size -1 and axis_index == 1) or (index.z == JunkPile.chunk_size -1 and axis_index == 2)  ):
 			add_quad(index, axis_index);
+		if sample_value1 < 0 and ((index.x == JunkPile.chunk_size * -1 and axis_index == 0) or (index.y == JunkPile.chunk_size * -1 and axis_index == 1) or (index.z == JunkPile.chunk_size * -1 and axis_index == 2)  ):
+			add_reversed_quad(index - axis, axis_index);
+
 
 ## Constant for the positive axis directions
 const AXIS := [
