@@ -9,7 +9,7 @@ func _ready() -> void:
 	randomize()
 	# Configure the FastNoiseLite instance.
 	_noise.noise_type = FastNoiseLite.NoiseType.TYPE_SIMPLEX_SMOOTH
-	#_noise.seed = randi()
+	_noise.seed = randi()
 	_noise.fractal_octaves = 4
 	_noise.frequency = 1.0 / 15.0
 

@@ -2,6 +2,7 @@ extends MeshInstance3D
 
 @export var chunk_offset := Vector3i.ZERO
 var surface_tool := SurfaceTool.new();
+#var i_am_done := false
 
 func _ready() -> void:
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
@@ -10,11 +11,11 @@ func _ready() -> void:
 	create_surface_mesh();
 	mesh = surface_tool.commit();
 
-const CENTER := Vector3.ZERO;
-const RADIUS: float = 5.0;	
+#const CENTER := Vector3.ZERO;
+#const RADIUS: float = 5.0;	
 
 func get_sample_value(index: Vector3i) -> float:	
-	return JunkPile.get_sample_value(index)   #CENTER.distance_to(index) - RADIUS;
+	return JunkPile.get_sample_value(index + Vector3i( position))   #CENTER.distance_to(index) - RADIUS;
 	
 ## Creates a surface mesh by sampling and creating quads to divide the samples
 ## size: square radius to create the mesh in
